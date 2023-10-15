@@ -1,0 +1,18 @@
+﻿@page
+@model TOHFerkey.Pages.DetailModel
+@{
+}
+
+@if (Model.Hero != null) {
+    <h3 class="text-3xl mt-3">@Model.Hero.Name.ToUpper() Details</h3>
+    <p>id: @Model.Hero.Id</p>
+    <form method="post">
+        <input type="hidden" asp-for="Hero.Id">
+        <input class="outline outline-1 outline-black w-full p-1 rounded-sm" asp-for="Hero.Name" />
+        <div class="flex flex-row gap-3 mt-2">
+            <a asp-page="/Index" class="text-black bg-gray-200 px-4 py-3 hover:bg-gray-700 hover:text-white rounded transition duration-100">go back</a>
+            <button type="submit" class="text-black bg-gray-200 px-4 py-3 hover:bg-gray-700 hover:text-white rounded transition duration-100">save</button>
+        </div>
+    </form>
+    
+}

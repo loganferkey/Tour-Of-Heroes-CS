@@ -1,0 +1,57 @@
+﻿@page
+@using TOHFerkey.Models;
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<h3 class="text-center text-2xl">Top Heroes</h3>
+<div class="flex flex-col md:flex-row gap-4 w-full mt-3">
+    @foreach(Hero hero in Model.Heroes)
+    {
+        <a asp-page="/Detail" asp-route-id="@hero.Id" class="text-xl text-white bg-gray-700 hover:bg-gray-900 transition duration-100 px-4 py-3 hover:cursor-pointer w-full text-center">@hero.Name</a>
+    }
+</div>
+<h3 class="text-2xl font-bold mt-3">Hero Search</h3>
+<div>
+    <input id="hero-search" class="w-full outline outline-1 outline-black p-1 mt-1 rounded-sm" />
+    <div class="flex flex-col" id="search-result"></div>
+</div>
+
+<script defer>
+    function debounce(func, delay) {
+        let timeout;
+        return function () {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                func.apply(context, args);
+            }, delay);
+        };
+    }
+
+    function updateSearch(s) {
+        fetch("/Search?search="+s)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('search-result').innerHTML = data;
+            })
+            .then(() => {
+                fetch('/Messages')
+                .then(response => response.text())
+                .then(data => {
+                    // update messages container
+                    document.getElementById('messages').innerHTML = data;
+                });
+            });
+        document.getElementById('messageContainer').classList.remove('hidden');
+    }
+
+    const search = document.getElementById('hero-search');
+    search.addEventListener('input', debounce(function() {
+        const query = search.value;
+        updateSearch(query);
+    }, 500));
+
+</script>

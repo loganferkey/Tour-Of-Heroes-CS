@@ -1,0 +1,52 @@
+﻿@page
+@model TOHFerkey.Pages.CreateModel
+@{
+}
+
+<h3 class="text-2xl font-bold mt-3">My Heroes</h3>
+<h4 class="text-lg">Hero name:</h4>
+<div class="flex flex-col gap-2">
+    <input asp-for="HeroName" id="hero-name" class="outline outline-1 outline-black w-full p-1 rounded-sm" />
+    <button type="submit" id="add-hero" class="w-fit text-white bg-gray-300 hover:bg-gray-600 transition duration-100 px-3 py-2 hover:cursor-pointer w-full text-center">Add hero</button>
+</div>
+
+<div class="mt-4 flex flex-col gap-2 text-center" id="hero-list">
+</div>
+
+<script defer>
+
+    function AppendDelete() {
+        const removeButtons = document.querySelectorAll('.remove-hero');
+        removeButtons.forEach((element) => {
+            element.addEventListener('click', () => {
+                const id = element.getAttribute('data-id');
+                element.parentElement.remove();
+                fetch("/List?crud=remove&heroId=" + id + "&name=");
+            });
+        });
+    }
+
+    function UpdateHeroes() {
+        fetch('/List')
+        .then(response => response.text())
+        .then(data => {
+            // update messages container
+            document.getElementById('hero-list').innerHTML = data;
+            AppendDelete();
+        });
+    }
+
+    function AddHero(name) {
+        fetch("/List?crud=add&heroId=0&heroName="+name);
+    }
+
+    UpdateHeroes();
+    document.getElementById('add-hero').addEventListener('click', function() {
+        const input = document.getElementById('hero-name');
+        if (input.value != '') {
+            AddHero(input.value);
+        }
+        UpdateHeroes();
+    });
+
+</script>

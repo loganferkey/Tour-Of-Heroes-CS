@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Tour of Heroes</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TOHFerkey.styles.css" asp-append-version="true" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-900">
+    <div class="w-[1024px] mx-auto p-10">
+        <header>
+            <h3 class="text-4xl font-bold text-gray-700">Tour of Heroes</h3>
+            <div class="flex flex-row gap-3 mt-3">
+                <a asp-page="/Index" class="text-black bg-gray-200 px-4 py-3 hover:bg-gray-700 hover:text-white rounded transition duration-100">Dashboard</a>
+                <a asp-page="/Create" class="text-black bg-gray-200 px-4 py-3 hover:bg-gray-700 hover:text-white rounded transition duration-100">Heroes</a>
+            </div>
+        </header>
+        <div class="container">
+            @RenderBody()
+            <div class="mt-2" id="messageContainer">
+                <h3 class="text-2xl font-semibold text-red-700">Messages</h3>
+                <p id="clear" class="mt-2 text-black bg-gray-200 px-4 py-3 hover:bg-gray-700 hover:text-white rounded transition duration-100 w-fit">Clear messages</p>
+                <div class="mt-2" id="messages">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script defer>
+        fetch('/Messages')
+        .then(response => response.text())
+        .then(data => {
+            // update messages container
+            document.getElementById('messages').innerHTML = data;
+        });
+        document.getElementById("clear").addEventListener("click", function() {
+            fetch("/Messages?clear=true");
+            document.getElementById('messages').innerHTML = '';
+            document.getElementById('messageContainer').classList.add('hidden');
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

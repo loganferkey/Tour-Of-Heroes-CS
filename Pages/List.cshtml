@@ -1,0 +1,15 @@
+﻿@page
+@using TOHFerkey.Models;
+@model TOHFerkey.Pages.ListModel
+@{
+    Layout = null;
+}
+
+@foreach (Hero hero in Model.Heroes)
+{
+    <div class="flex flex-row rounded-sm overflow-hidden outline outline-1 outline-gray-300">
+        <div class="bg-gray-900 text-white p-2">@hero.Id</div>
+        <div class="w-full h-full bg-gray-300 text-black p-2">@hero.Name</div>
+        <div class="bg-white text-black w-12 p-2 hover:cursor-pointer remove-hero" data-id="@hero.Id">X</div>
+    </div>
+}

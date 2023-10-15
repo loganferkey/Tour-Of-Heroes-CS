@@ -1,0 +1,11 @@
+﻿@page
+@using TOHFerkey.Models;
+@model TOHFerkey.Pages.SearchModel
+@{
+    Layout = null;
+}
+
+@foreach (Hero hero in Model.Heroes)
+{
+    <a asp-page="/Detail" asp-route-id="@hero.Id" class="outline outline-1 outline-black p-1">@hero.Name</a>
+}

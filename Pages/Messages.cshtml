@@ -1,0 +1,10 @@
+﻿@page
+@model TOHFerkey.Pages.MessagesModel
+@{
+    Layout = null;
+}
+
+@foreach (string message in Model.Messages)
+{
+    <p>@message</p>
+}
